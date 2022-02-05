@@ -498,7 +498,7 @@ class ConfigurationTest extends ClearStateTestCase
 
         // Value not allowed
         $this->expectException(AssertionFailedException::class);
-        $c->getValueOptionalValidate('opt', ['d', 'e', 'f'], 'c');
+        $c->getOptionalValueValidate('opt', ['d', 'e', 'f'], 'c');
     }
 
 
