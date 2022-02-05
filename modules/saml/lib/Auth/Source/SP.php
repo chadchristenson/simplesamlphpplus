@@ -539,10 +539,10 @@ class SP extends \SimpleSAML\Auth\Source
 
             if (isset($state['saml:ProxyCount']) && $state['saml:ProxyCount'] !== null) {
                 $ar->setProxyCount($state['saml:ProxyCount']);
-            } elseif ($idpMetadata->getInteger('ProxyCount', null) !== null) {
-                $ar->setProxyCount($idpMetadata->getInteger('ProxyCount', null));
-            } elseif ($this->metadata->getInteger('ProxyCount', null) !== null) {
-                $ar->setProxyCount($this->metadata->getInteger('ProxyCount', null));
+            } elseif ($idpMetadata->hasOption('ProxyCount')) {
+                $ar->setProxyCount($idpMetadata->getInteger('ProxyCount'));
+            } elseif ($this->metadata->hasOption('ProxyCount')) {
+                $ar->setProxyCount($this->metadata->getInteger('ProxyCount'));
             }
 
             $requesterID = [];

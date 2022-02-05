@@ -354,33 +354,42 @@ class ConfigurationTest extends ClearStateTestCase
     {
         $c = Configuration::loadFromArray([
             'int_opt' => 42,
+            'wrong_opt' => 'test',
         ]);
-        $this->assertEquals($c->getInteger('missing_opt', '--missing--'), '--missing--');
-        $this->assertEquals($c->getInteger('int_opt', '--missing--'), 42);
-    }
 
+        // Normal use
+        $this->assertEquals($c->getInteger('int_opt'), 42);
 
-    /**
-     * Test \SimpleSAML\Configuration::getInteger() missing option
-     */
-    public function testGetIntegerMissing(): void
-    {
-        $this->expectException(Exception::class);
-        $c = Configuration::loadFromArray([]);
+        // Missing option
+        $this->expectException(AssertionFailedException::class);
         $c->getInteger('missing_opt');
+
+        // Invalid option type
+        $this->expectException(AssertionFailedException::class);
+        $c->getInteger('wrong_opt');
     }
 
 
     /**
-     * Test \SimpleSAML\Configuration::getInteger() wrong option
+     * Test \SimpleSAML\Configuration::getOptionalInteger()
      */
-    public function testGetIntegerWrong(): void
+    public function testGetOptionalInteger(): void
     {
-        $this->expectException(Exception::class);
         $c = Configuration::loadFromArray([
-            'wrong' => '42',
+            'int_opt' => 42,
+            'wrong_opt' => 'test',
         ]);
-        $c->getInteger('wrong');
+
+
+        // Normal use
+        $this->assertEquals($c->getOptionalInteger('int_opt', 42), 42);
+
+        // Missing option
+        $this->assertEquals($c->getOptionalInteger('missing_opt', 32), 32);
+
+        // Invalid option type
+        $this->expectException(AssertionFailedException::class);
+        $c->getOptionalInteger('wrong_opt', 10);
     }
 
 
