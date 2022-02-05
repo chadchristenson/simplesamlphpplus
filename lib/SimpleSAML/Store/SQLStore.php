@@ -57,7 +57,7 @@ class SQLStore implements StoreInterface
         $dsn = $config->getString('store.sql.dsn');
         $username = $config->getOptionalString('store.sql.username', null);
         $password = $config->getOptionalString('store.sql.password', null);
-        $options = $config->getArray('store.sql.options', null);
+        $options = $config->getOptionalArray('store.sql.options', null);
         $this->prefix = $config->getOptionalString('store.sql.prefix', 'simpleSAMLphp');
         try {
             $this->pdo = new PDO($dsn, $username, $password, $options);
