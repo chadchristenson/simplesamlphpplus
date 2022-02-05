@@ -653,36 +653,47 @@ class Configuration implements Utils\ClearableState
     /**
      * This function retrieves an integer configuration option.
      *
-     * An exception will be thrown if this option isn't an integer, or if this option isn't found, and no default value
-     * is given.
+     * An exception will be thrown if this option isn't an integer, or if this option isn't found.
      *
-     * @param string $name The name of the option.
-     * @param mixed  $default A default value which will be returned if the option isn't found. The option will be
-     *                  required if this parameter isn't given. The default value can be any value, including
-     *                  null.
+     * @param string $name  The name of the option.
+     * @return int          The option with the given name.
      *
-     * @return int|mixed The option with the given name, or $default if the option isn't found and $default is
-     * specified.
-     *
-     * @throws \Exception If the option is not an integer.
+     * @throws \SimpleSAML\Assert\AssertionFailedException If the option is not an integer.
      */
-    public function getInteger(string $name, $default = self::REQUIRED_OPTION)
+    public function getInteger(string $name): int
     {
-        $ret = $this->getValue($name, $default);
+        $ret = $this->getValue($name);
 
-        if ($ret === $default) {
-            // the option wasn't found, or it matches the default value. In any case, return this value
-            return $ret;
-        }
-
-        if (!is_int($ret)) {
-            throw new \Exception(
-                $this->location . ': The option ' . var_export($name, true) .
-                ' is not a valid integer value.'
-            );
-        }
+        Assert::integer(
+            $ret,
+            sprintf('%s: The option %s is not a valid integer value.', $this->location, var_export($name, true)),
+        );
 
         return $ret;
+    }
+
+
+    /**
+     * This function retrieves an optional integer configuration option.
+     *
+     * An exception will be thrown if this option isn't an integer.
+     *
+     * @param string $name     The name of the option.
+     * @param mixed  $default  A default value which will be returned if the option isn't found.
+     *                         The default value can be null or an integer.
+     *
+     * @return int|null The option with the given name, or $default if the option isn't found.
+     *
+     * @throws \SimpleSAML\Assert\AssertionFailedException If the option is not an integer.
+     */
+    public function getOptionalInteger(string $name, ?int $default): ?int
+    {
+        if (!$this->hasValue($name)) {
+            // the option wasn't found, or it matches the default value. In any case, return this value
+            return $default;
+        }
+
+        return $this->getInteger($name);
     }
 
 
