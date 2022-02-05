@@ -271,7 +271,7 @@ class SP extends \SimpleSAML\Auth\Source
             $metadata['saml20.sign.assertion'] = $this->metadata->getBoolean('WantAssertionsSigned');
         }
         if ($this->metadata->hasValue('redirect.sign')) {
-            $metadata['redirect.validate'] = $this->metadata->geBoolean('redirect.sign');
+            $metadata['redirect.validate'] = $this->metadata->getBoolean('redirect.sign');
         } elseif ($this->metadata->hasValue('sign.authnrequest')) {
             $metadata['validate.authnrequest'] = $this->metadata->getBoolean('sign.authnrequest');
         }
