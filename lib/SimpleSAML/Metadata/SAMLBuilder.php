@@ -434,7 +434,7 @@ class SAMLBuilder
         $attributeconsumer->setIndex($metadata->getOptionalInteger('attributes.index', 0));
 
         if ($metadata->hasValue('attributes.isDefault')) {
-            $attributeconsumer->setIsDefault($metadata->getBoolean('attributes.isDefault', false));
+            $attributeconsumer->setIsDefault($metadata->getOptionalBoolean('attributes.isDefault', false));
         }
 
         $attributeconsumer->setServiceName($name);
