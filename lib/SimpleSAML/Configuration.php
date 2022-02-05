@@ -428,7 +428,7 @@ class Configuration implements Utils\ClearableState
      */
     public function getBasePath(): string
     {
-        $baseURL = $this->getString('baseurlpath', 'simplesaml/');
+        $baseURL = $this->getOptionalString('baseurlpath', 'simplesaml/');
 
         if (preg_match('#^https?://[^/]*(?:/(.+/?)?)?$#', $baseURL, $matches)) {
             // we have a full url, we need to strip the path
@@ -453,7 +453,7 @@ class Configuration implements Utils\ClearableState
             $c['baseurlpath'] = $httpUtils->guessBasePath();
             throw new Error\CriticalConfigurationError(
                 'Incorrect format for option \'baseurlpath\'. Value is: "' .
-                $this->getString('baseurlpath', 'simplesaml/') . '". Valid format is in the form' .
+                $this->getOptionalString('baseurlpath', 'simplesaml/') . '". Valid format is in the form' .
                 ' [(http|https)://(hostname|fqdn)[:port]]/[path/to/simplesaml/].',
                 $this->filename,
                 $c
@@ -527,7 +527,7 @@ class Configuration implements Utils\ClearableState
     public function getBaseDir(): string
     {
         // check if a directory is configured in the configuration file
-        $dir = $this->getString('basedir', null);
+        $dir = $this->getOptionalString('basedir', null);
         if ($dir !== null) {
             // add trailing slash if it is missing
             if (substr($dir, -1) !== DIRECTORY_SEPARATOR) {
@@ -1031,7 +1031,7 @@ class Configuration implements Utils\ClearableState
                     'Location' => $ep,
                     'Binding'  => $this->getDefaultBinding($endpointType),
                 ];
-                $responseLocation = $this->getString($endpointType . 'Response', null);
+                $responseLocation = $this->getOptionalString($endpointType . 'Response', null);
                 if ($responseLocation !== null) {
                     $ep['ResponseLocation'] = $responseLocation;
                 }
@@ -1213,7 +1213,7 @@ class Configuration implements Utils\ClearableState
         } elseif ($this->hasValue($prefix . 'certData')) {
             $certData = $this->getString($prefix . 'certData');
             $certData = preg_replace('/\s+/', '', $certData);
-            $keyName = $this->getString($prefix . 'key_name', null);
+            $keyName = $this->getOptionalString($prefix . 'key_name', null);
             return [
                 [
                     'name'            => $keyName,
@@ -1244,7 +1244,7 @@ class Configuration implements Utils\ClearableState
                 );
             }
             $certData = preg_replace('/\s+/', '', $matches[1]);
-            $keyName = $this->getString($prefix . 'key_name', null);
+            $keyName = $this->getOptionalString($prefix . 'key_name', null);
 
             return [
                 [

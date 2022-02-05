@@ -121,7 +121,7 @@ if ($state) {
     }
 } else {
     // this is an unsolicited response
-    $relaystate = $spMetadata->getString('RelayState', $response->getRelayState());
+    $relaystate = $spMetadata->getOptionalString('RelayState', $response->getRelayState());
     $state = [
         'saml:sp:isUnsolicited' => true,
         'saml:sp:AuthId'        => $sourceId,
@@ -154,7 +154,7 @@ $foundAuthnStatement = false;
 foreach ($assertions as $assertion) {
     // check for duplicate assertion (replay attack)
     $config = Configuration::getInstance();
-    $storeType = $config->getString('store.type', 'phpsession');
+    $storeType = $config->getOptionalString('store.type', 'phpsession');
 
     $store = StoreFactory::getInstance($storeType);
     if ($store !== false) {
