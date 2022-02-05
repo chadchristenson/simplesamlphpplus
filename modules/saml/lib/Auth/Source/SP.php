@@ -96,7 +96,7 @@ class SP extends \SimpleSAML\Auth\Source
         $this->entityId = $this->metadata->getString('entityID');
         $this->idp = $this->metadata->getString('idp', null);
         $this->discoURL = $this->metadata->getString('discoURL', null);
-        $this->disable_scoping = $this->metadata->getBoolean('disable_scoping', false);
+        $this->disable_scoping = $this->metadata->getOptionalBoolean('disable_scoping', false);
     }
 
 
@@ -271,7 +271,7 @@ class SP extends \SimpleSAML\Auth\Source
             $metadata['saml20.sign.assertion'] = $this->metadata->getBoolean('WantAssertionsSigned');
         }
         if ($this->metadata->hasValue('redirect.sign')) {
-            $metadata['redirect.validate'] = $this->metadata->getBoolean('redirect.sign');
+            $metadata['redirect.validate'] = $this->metadata->geBoolean('redirect.sign');
         } elseif ($this->metadata->hasValue('sign.authnrequest')) {
             $metadata['validate.authnrequest'] = $this->metadata->getBoolean('sign.authnrequest');
         }
@@ -532,7 +532,7 @@ class SP extends \SimpleSAML\Auth\Source
         $requesterID = [];
 
         /* Only check for real info for Scoping element if we are going to send Scoping element */
-        if ($this->disable_scoping !== true && $idpMetadata->getBoolean('disable_scoping', false) !== true) {
+        if ($this->disable_scoping !== true && $idpMetadata->getOptionalBoolean('disable_scoping', false) !== true) {
             if (isset($state['saml:IDPList'])) {
                 $IDPList = $state['saml:IDPList'];
             }
@@ -994,9 +994,9 @@ class SP extends \SimpleSAML\Auth\Source
             $lr->setExtensions($this->metadata->getArray('saml:logout:Extensions'));
         }
 
-        $encryptNameId = $idpMetadata->getBoolean('nameid.encryption', null);
+        $encryptNameId = $idpMetadata->getOptionalBoolean('nameid.encryption', null);
         if ($encryptNameId === null) {
-            $encryptNameId = $this->metadata->getBoolean('nameid.encryption', false);
+            $encryptNameId = $this->metadata->getOptionalBoolean('nameid.encryption', false);
         }
         if ($encryptNameId) {
             $lr->encryptNameId(Module\saml\Message::getEncryptionKey($idpMetadata));

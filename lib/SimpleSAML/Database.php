@@ -85,7 +85,7 @@ class Database
     private function __construct(Configuration $config)
     {
         $driverOptions = $config->getArray('database.driver_options', []);
-        if ($config->getBoolean('database.persistent', true)) {
+        if ($config->getOptionalBoolean('database.persistent', true)) {
             $driverOptions[PDO::ATTR_PERSISTENT] = true;
         }
 
@@ -136,7 +136,7 @@ class Database
                 'database.username'   => $config->getString('database.username', null),
                 'database.password'   => $config->getString('database.password', null),
                 'database.prefix'     => $config->getString('database.prefix', ''),
-                'database.persistent' => $config->getBoolean('database.persistent', true),
+                'database.persistent' => $config->getOptionalBoolean('database.persistent', true),
             ],
             // TODO: deprecated: the "database.slave" terminology is preserved here for backwards compatibility.
             'secondaries' => $config->getArray('database.secondaries', $config->getArray('database.slaves', [])),
